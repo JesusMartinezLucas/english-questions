@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>English Practice Website</title>
+    <style>
+
+  	html, body {
+	    height: 100%;
+	    margin: 0px;
+	}
+
+        /* CSS styles for the squares */
+        .square {
+            width: 100px;
+            height: 100px;
+            background-color: lightgray;
+            border: 1px solid black;
+            text-align: center;
+            line-height: 100px;
+            font-size: 24px;
+            cursor: pointer;
+            float: left;
+            margin: 2rem;
+        }
+
+        /* CSS styles for the question and timer */
+        #question-container {
+            background-color: lightgray;
+            height: 100%;
+            display: none;
+	    justify-content: center;
+	    align-items: center;
+	    flex-direction: column;
+	    font-size: 4rem;
+        }
+
+        #timer {
+            margin-top: 10px;
+            font-size: 18px;
+	    font-size: 4rem;
+	    font-weight: bold;
+	    margin-bottom: 16rem;
+        }
+
+	#container {
+	    display: flex;
+	    align-items: center;
+	    justify-content: center;
+	    align-content: center;
+	    flex-wrap: wrap;
+	}
+
+	#question {
+	    text-align: center;
+	}
+
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+    <div id="question-container">
+        <h2 id="question"></h2>
+        <div id="timer"></div>
+    </div>
+
+    <script>
+        // JavaScript code
+        var initialQuestions = [
+			    "If you had to play the Calamari game, which 3 members from the school would you choose for your team and why?",
+			    "If you had to live in a TV show, what would it be?",
+			    "If you had to live in a movie, what would it be?",
+			    "If you had to live in a book, what would it be?",
+			    "If you had to live in an anime, what would it be?",
+			    "If you could change the law, what would you change?",
+			    "How would you describe your ideal world?",
+			    "If you could kill somebody, would you do it and who?",
+			    "Choose one superpower.",
+			    "If you had to do only one job for the rest of your life, which one would you choose?",
+			    "If you could save one life, who would you save (the rest might live or die)?",
+			    "You are traveling to a dangerous place, choose one person you know to be your bodyguard.",
+			    "If you had to write a book, what would you write about?",
+			    "You are going to be stuck in a place for one month, you can only choose 3 songs to listen to during that time, which ones would you choose and why?",
+			    "You are going to be stuck in a place for one month, you can only choose 3 movies to watch during that time, which ones would you choose and why?",
+			    "You are going to be stuck in a place for one month, you can only choose 3 TV shows to watch during that time, which ones would you choose and why?",
+			    "You are going to be stuck in a place for one month, you can only choose 3 anime to watch during that time, which ones would you choose and why?",
+			    "You are going to be stuck in a place for one month, you can only choose 3 games to play during that time, which ones would you choose and why?",
+			    "You are going to be stuck in a place for one month, you can only choose 3 video games to play during that time, which ones would you choose and why?",
+			    "You are going to be stuck in a place for one month, you can only choose 3 foods to eat during that time, which ones would you choose and why?",
+			    "You have free inscriptions to three sports, which ones would you choose and why?",
+			    "You can travel to three places for free, which ones would you choose and why?",
+			    "If you had to live on an island for the rest of your life, who would you choose and why?",
+			    "If you could change three things about your body, what would you change and why?",
+			    "If you could change three things about your personality, what would you change and why?",
+			    "Invent a short story about a cat.",
+			    "Invent a short story about a dog.",
+			    "Invent a short story about a zombie apocalypse.",
+			    "Invent a short story about a child.",
+			    "Invent a short story about a criminal.",
+			    "Invent a short story about a soldier.",
+			    "Invent a short story about a doctor.",
+			    "Invent a short story about a cockroach.",
+			    "Invent a short story about a fly.",
+			    "Invent a short story about a pilot.",
+			    "Invent a short story about a priest.",
+			    "Invent a short story about a bird.",
+			    "Invent a short story about a ghost.",
+			    "Invent a short story about an alien.",
+			    "If you could marry anyone you want, who would you choose and why?",
+			    "If you could give immortality for 50 years to two people, who would you choose and why?",
+			    "What is something you think is right and everyone else should understand?",
+			    "If you could go to three concerts for free, which ones would you choose and why?",
+			    "If you had one wish, what would you wish and why?",
+			    "What would you do if you won the lottery?",
+			    "I'm going to buy you three things you want, but you can't sell them or gift them, what would you choose?",
+			    "Choose one place you would like to go for your next vacation.",
+			    "Choose any place you would like to go for your next meal.",
+			    "Choose any place you would like to go for one day.",
+			    "Would you rather be rich or famous?",
+			    "If you could have dinner with a famous person, who would you choose and why?",
+			    "If you could choose any personal teacher, who would you choose and why?",
+			    "If you could take three courses for free about anything you want, which ones would you choose?",
+			    "If you could live anywhere, where would it be?",
+			    "How many years would you like to live and why?",
+			    "Would you like to have children? How many and why?",
+			    "What are three characteristics of a person to be your friend?",
+			    "Choose one pet and explain your decision.",
+			    "What is your favorite animal and why?",
+			    "What is your favorite color and why?",
+			    "What is your favorite food and why?",
+			    "What are your favorite hobbies?",
+			    "What are three abilities that you don't have but you would like to have?",
+			    "If you had a time machine, what would you do with it?",
+			    "What age would you like to have for the rest of your life?",
+			    "Choose three experiences that you would like to have in the future.",
+			    "Tell a funny story about yourself.",
+			    "What is something you did in the past and you regret it?",
+			    "What is something you didn't do in the past and you regret it?",
+			    "If you could bring someone to live again, who would you choose and why?",
+			    "Would you sacrifice yourself for someone else? Who and why?",
+			    "What musical instrument would you like to learn?",
+			    "If you could choose your parents' occupations, which ones would you choose and why?",
+			    "How do you see yourself in 5 years?",
+			    "What advice would you give to yourself ten years younger?",
+			    "If you had a trial by combat with guns, which real person would you choose as your champion?",
+			    "If you had a trial by combat with ancient weapons, which real person would you choose as your champion?",
+			    "If you had a trial by combat with no weapons, which real person would you choose as your champion?",
+			    "If you had a trial by combat with guns, which fictional character would you choose as your champion?",
+			    "If you had a trial by combat with ancient weapons, which fictional character would you choose as your champion?",
+			    "If you had a trial by combat with no weapons, which fictional character would you choose as your champion?",
+			    "Which famous person do you admire?",
+			    "Which non-famous person do you admire?",
+			    "What fictional character would you like to be?",
+			    "What are three things you like in other people?",
+			    "What are three things you don't like in other people?",
+			    "What are three movies everyone should watch at least once in their lives?",
+			    "What are three TV shows everyone should watch at least once in their lives?",
+			    "Which are three anime everyone should watch at least once in their lives?",
+			    "What are three songs everyone should listen to at least once in their lives?",
+			    "What are three things everyone should do at least once in their lives?",
+			    "What is one good lie you have told someone else?",
+			    "What is one bad lie you have told someone else?",
+			    "What is one good lie you have been told by someone else?",
+			    "What is one bad lie you have been told by someone else?",
+			    "What are three things everyone should do every day?",
+			    "Who is your favorite fictional character?",
+			    "Who is a character you identify with?",
+			    "If you had to be an animal, what animal would you like to be?",
+			    "If you had to be an insect, what insect would you like to be?",
+			    "Which unwritten rule would you add?",
+			    "Which written rule would you get rid of?",
+			    "If you could be any fictional character, who would you like to be?",
+			    "What is your goal in life?",
+			    "What is something you would never do?",
+			    "Which job would you never take?",
+			    "Tell a joke.",
+			    "Which question would you not like to be asked?",
+			    "Why are you learning English?",
+			    "Do you like to learn English?",
+			    "What is your favorite subject in school?",
+			    "What subject in school do you not like?",
+			    "What are you good at?",
+			    "What are you bad at?",
+			    "What scares you the most?",
+			    "What makes you the happiest?",
+			    "What would make you extremely happy?",
+			    "What is something you can't live without?",
+			    "What historical event would you like to change?",
+			    "Who is your favorite historical character?",
+			    "What is your favorite part of history?",
+			    "What is something you have to do but don't like?",
+			    "What are your three favorite pictures on your phone?",
+			    "Which are the top five random songs in your playlist?",
+			    "How old are you and how old would you like to be?",
+			    "What do you usually do on weekends?",
+			    "What are your plans for the future?",
+			    "Who is your crush?",
+			    "Have you ever been in a fight?",
+			    "How would you name your son and daughter?",
+			    "Would you prefer super strength or super intelligence?",
+			    "Do you think we are in the Matrix?",
+			    "Would you choose the red or blue pill?",
+			    "What would you do if you discovered you are a robot?",
+			    "Would you use a Teleportation machine?",
+			    "Are you worried about something today?",
+			    "Can you drive? If not, would you like to learn?",
+			    "Can you swim? If not, would you like to learn?",
+			    "Would you like to do skydiving?",
+			    "Would you like to do bungee jumping?",
+			    "Have you ever ridden a horse?",
+			    "Have you ever traveled by plane or helicopter?",
+			    "Do you believe aliens exist?",
+			    "What foods don't you like?",
+			    "What is the worst experience you have ever had?",
+			    "What is the best experience you have ever had?",
+			    "What is something you like and don't like in movies and TV shows?",
+			    "If you were a teacher, how would you be with your students?",
+			    "Have you ever cheated in an exam?",
+			    "Have you ever been in a dangerous situation?",
+			    "Have you ever stolen something?",
+			    "Have you ever been robbed?",
+			    "Tell us an interesting fact about you.",
+			    "What is the craziest thing you've ever done?",
+			    "What is the craziest thing that has ever happened to you?",
+			    "What is the weirdest thing you have ever seen?"
+            // Add more questions here
+        ];
+	var questions = shuffleArray(initialQuestions);	
+
+        var currentQuestionIndex = 0;
+        var timerInterval;
+        var timerSeconds = 60; // 1 minutes
+
+        function showQuestion() {
+	    deleteSquares();
+            var questionContainer = document.getElementById("question-container");
+            var questionElement = document.getElementById("question");
+            var timerElement = document.getElementById("timer");
+            var container = document.getElementById("container");
+
+            // Display the question and timer
+            questionElement.textContent = questions[currentQuestionIndex];
+            questionContainer.style.display = "flex";
+            container.style.display = "none";
+
+            // Start the timer
+            var seconds = timerSeconds;
+            timerElement.textContent = formatTime(seconds);
+            timerInterval = setInterval(function() {
+                seconds--;
+                timerElement.textContent = formatTime(seconds);
+
+                if (seconds <= 0) {
+                    // Time's up, hide the question and reset the display
+                    clearInterval(timerInterval);
+                    questionContainer.style.display = "none";
+            	    container.style.display = "flex";
+                    currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
+                    showSquares();
+                }
+            }, 1000);
+        }
+
+        function formatTime(seconds) {
+            var minutes = Math.floor(seconds / 60);
+            var remainingSeconds = seconds % 60;
+            return minutes.toString().padStart(2, "0") + ":" + remainingSeconds.toString().padStart(2, "0");
+        }
+
+        function showSquares() {
+            var container = document.getElementById("container");
+
+            // Remove any existing squares
+            while (container.firstChild) {
+                container.removeChild(container.firstChild);
+            }
+
+            // Create new squares
+            for (var i = 0; i < questions.length; i++) {
+                var square = document.createElement("div");
+                square.classList.add("square");
+                square.textContent = i + 1;
+                square.addEventListener("click", showQuestion);
+                container.appendChild(square);
+            }
+        }
+
+	function deleteSquares(){
+
+            var container = document.getElementById("container");
+
+            // Remove any existing squares
+            while (container.firstChild) {
+                container.removeChild(container.firstChild);
+            }
+	}
+
+        function shuffleArray(array) {
+            var currentIndex = array.length;
+    	    var temporaryValue, randomIndex;
+
+    	    // While there remain elements to shuffle
+   	     while (currentIndex !== 0) {
+        	// Pick a remaining element
+        	randomIndex = Math.floor(Math.random() * currentIndex);
+        	currentIndex -= 1;
+
+        	// Swap it with the current element
+       		temporaryValue = array[currentIndex];
+        	array[currentIndex] = array[randomIndex];
+        	array[randomIndex] = temporaryValue;
+    	    }
+
+    	    return array;
+	}
+
+        showSquares();
+    </script>
+</body>
+</html>
+
