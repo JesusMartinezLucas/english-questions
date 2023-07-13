@@ -54,13 +54,21 @@
 	    text-align: center;
 	}
 
+	button {
+	    font-size: 2rem;
+	}
+
     </style>
 </head>
 <body>
     <div id="container"></div>
     <div id="question-container">
+	<img id="imgTeddy" src="images/teddy_bear.png" width="100" height="100" style="display:none;">
         <h2 id="question"></h2>
-        <div id="timer"></div>
+	<!--<div id="timer"></div>-->
+	<button onclick="clickDone()">Done</button>	
+	<h6 style="font-size:0.5rem;"></h6>	
+	<button onclick="clickContinue()">Continue</button>	
     </div>
 
     <script>
@@ -227,14 +235,25 @@
 	var questions = shuffleArray(initialQuestions);	
 
         var currentQuestionIndex = 0;
-        var timerInterval;
-        var timerSeconds = 60; // 1 minutes
+        //var timerInterval;
+        //var timerSeconds = 60; // 1 minutes
+
+	function clickDone(){
+		//console.log("Done");
+	    var imgTeddy = document.getElementById("imgTeddy");
+	    imgTeddy.style.display = "inline-block";
+	}
+	function clickContinue(){
+		//console.log("Continue");
+	    hideQuestion();
+            showSquares();
+	}
 
         function showQuestion() {
 	    deleteSquares();
             var questionContainer = document.getElementById("question-container");
             var questionElement = document.getElementById("question");
-            var timerElement = document.getElementById("timer");
+            //var timerElement = document.getElementById("timer");
             var container = document.getElementById("container");
 
             // Display the question and timer
@@ -243,7 +262,7 @@
             container.style.display = "none";
 
             // Start the timer
-            var seconds = timerSeconds;
+            /*var seconds = timerSeconds;
             timerElement.textContent = formatTime(seconds);
             timerInterval = setInterval(function() {
                 seconds--;
@@ -257,14 +276,25 @@
                     currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
                     showSquares();
                 }
-            }, 1000);
+            }, 1000);*/
+	
         }
 
-        function formatTime(seconds) {
+	function hideQuestion(){
+            var container = document.getElementById("container");
+            var questionContainer = document.getElementById("question-container");
+	    var imgTeddy = document.getElementById("imgTeddy");
+	    imgTeddy.style.display = "none";
+            questionContainer.style.display = "none";
+            container.style.display = "flex";
+            currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
+	}
+
+        /*function formatTime(seconds) {
             var minutes = Math.floor(seconds / 60);
             var remainingSeconds = seconds % 60;
             return minutes.toString().padStart(2, "0") + ":" + remainingSeconds.toString().padStart(2, "0");
-        }
+        }*/
 
         function showSquares() {
             var container = document.getElementById("container");
